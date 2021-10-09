@@ -7,7 +7,7 @@ export default class Game extends React.Component {
         super(props);
         this.state = {
             history: [
-                { squaresValue: Array(9).fill(null) },
+                { squaresValue: Array(9).fill(null), curStep:null },
             ],
             xIsNext: true,
             stepIdx: 0,
@@ -30,19 +30,20 @@ export default class Game extends React.Component {
         }
         curSquaresValue[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
-            history: history.concat([{ squaresValue: curSquaresValue }]),
+            history: history.concat([{ squaresValue: curSquaresValue, curStep: indexToPosition(i) }]),
             xIsNext: !this.state.xIsNext,
             stepIdx: history.length,
         });
     }
 
     render() {
-        const history = this.state.history.slice(0, this.state.stepIdx+1);
+        const history = this.state.history;
         const current = history[this.state.stepIdx];
         const winner = calculateWinner(current.squaresValue);
 
         const moves = history.map((step, idx) => {
-            const desc = idx ? 'Go to move #' + idx : 'Go to game start';
+            //const desc = idx ? 'Go to move #' + idx + ', '+ step.curStep : 'Go to game start';
+            const desc = idx ? `Go to move #${idx} (${step.curStep})` : 'Go to game start';
             return <li key={idx}><button onClick={() => { this.jumpTo(idx) }}>{desc}</button></li>;
         });
 
@@ -87,4 +88,19 @@ function calculateWinner(squares) {
         }
     }
     return null;
+}
+
+function indexToPosition(i){
+    switch(i){
+        case 0: return [0,0];
+        case 1: return [0,1];
+        case 2: return [0,2];
+        case 3: return [1,0];
+        case 4: return [1,1];
+        case 5: return [1,2];
+        case 6: return [2,0];
+        case 7: return [2,1];
+        case 8: return [2,2];
+        default: return null;
+    }
 }
