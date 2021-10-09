@@ -44,8 +44,9 @@ export default class Game extends React.Component {
         const moves = history.map((step, idx) => {
             //const desc = idx ? 'Go to move #' + idx + ', '+ step.curStep : 'Go to game start';
             const desc = idx ? `Go to move #${idx} (${step.curStep})` : 'Go to game start';
-            return <li key={idx}><button onClick={() => { this.jumpTo(idx) }}>{desc}</button></li>;
+            return <li key={idx}><button onClick={() => { this.jumpTo(idx) }} className={idx===this.state.stepIdx?'bold-button':null} >{desc}</button></li>;
         });
+
 
         let status;
         if (winner) {
